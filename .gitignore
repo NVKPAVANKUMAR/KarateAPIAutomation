@@ -4,4 +4,7 @@ allure-results
 target
 .idea
 KarateAutomation.iml
+.gitignore
+APITestRunner.java
+
 

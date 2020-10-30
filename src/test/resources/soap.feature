@@ -1,10 +1,9 @@
 Feature: test soap end point
 
   Background:
-    #   * url demoBaseUrl + '/soap'
-# this live url should work if you want to try this on your own
     * url 'http://www.dneonline.com/calculator.asmx'
 
+    # way - 1 passing with request body
   Scenario: soap 1.1
     Given request
     """
@@ -23,12 +22,12 @@ Feature: test soap end point
     And match /Envelope/Body/AddResponse/AddResult == 5
     And print 'response: ', response
 
+
+    # way - 2 passing via xml file
+  @regression
   Scenario: soap 1.2
     Given request read('request.xml')
-    # soap is just an HTTP POST, so here we set the required header manually ..
     And header Content-Type = 'text/xml; charset=utf-8'
-    # .. and then we use the 'method keyword' instead of 'soap action'
     When method post
     Then status 200
-    # note how we focus only on the relevant part of the payload and read expected XML from a file
     And match /Envelope/Body/AddResponse == read('expected.xml')
